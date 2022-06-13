@@ -2,53 +2,11 @@
 #include "funcao.h"
 #include <iostream>
 
-float gamma1 = 30;
-float gamma2 = 60;
-float gamma3 = 90;
-float gamma4 = 120;
-float gamma5 = 90;
-float gamma6 = 30;
-
-float Rxy_1[4][4] = { {cos(gamma1), -sin(gamma1), 0, 0},
-					{sin(gamma1),  cos(gamma1), 0, 0},
-					{   0,       0, 1,       0    },
-					{	0,		 0, 0,		1	  }
-};
+extern float gamma1, gamma2, gamma3, gamma4, gamma5, gamma6;
 
 
 
-float Ryz_2[4][4] = { {   1,       0, 0,       0    },
-					{0, cos(gamma2), -sin(gamma2), 0},
-					{0, sin(gamma2),  cos(gamma2), 0},
-					 {0,0,0,1}
-};
-
-float Rzw[4][4] = { {1,  0,	   0,		  0    },
-					{0,	 1,    0,         0    },
-					{0,	 0, cos(gamma3), -sin(gamma3)},
-					{0,  0, sin(gamma3),  cos(gamma3)} };
-
-float Rxy_4[4][4] = { {cos(gamma4), -sin(gamma4), 0, 0},
-					 {sin(gamma4),  cos(gamma4), 0, 0},
-					 {   0,       0, 1,       0    },
-					 {	0,		 0, 0,		1	  }
-};
-
-
-float Ryz_5[4][4] = { {   1,       0, 0,       0    },
-					{0, cos(gamma5), -sin(gamma5), 0},
-					{0, sin(gamma5),  cos(gamma5), 0},
-					 {0,0,0,1}
-};
-
-float Rxy_6[4][4] = { {cos(gamma6), -sin(gamma6), 0, 0},
-					{sin(gamma6),  cos(gamma6), 0, 0},
-					{   0,       0, 1,       0    },
-					{	0,		 0, 0,		1	  }
-};
-
-
-float** multiplica_matrizes(float **m1, float (*m2)[4]) {
+float** multiplica_matrizes(float** m1, float(*m2)[4]) {
 	// matrices de tamanho 4x4
 	float** m3;
 	m3 = new float* [4];
@@ -93,6 +51,44 @@ float** multiplica_matrizes1(float(*m1)[4], float(*m2)[4]) {
 }
 
 float** rotaciona() {
+	float Rxy_1[4][4] = { {cos(gamma1), -sin(gamma1), 0, 0},
+					{sin(gamma1),  cos(gamma1), 0, 0},
+					{   0,       0, 1,       0    },
+					{	0,		 0, 0,		1	  }
+	};
+
+
+
+	float Ryz_2[4][4] = { {   1,       0, 0,       0    },
+						{0, cos(gamma2), -sin(gamma2), 0},
+						{0, sin(gamma2),  cos(gamma2), 0},
+						 {0,0,0,1}
+	};
+
+	float Rzw[4][4] = { {1,  0,	   0,		  0    },
+						{0,	 1,    0,         0    },
+						{0,	 0, cos(gamma3), -sin(gamma3)},
+						{0,  0, sin(gamma3),  cos(gamma3)} };
+
+	float Rxy_4[4][4] = { {cos(gamma4), -sin(gamma4), 0, 0},
+						 {sin(gamma4),  cos(gamma4), 0, 0},
+						 {   0,       0, 1,       0    },
+						 {	0,		 0, 0,		1	  }
+	};
+
+
+	float Ryz_5[4][4] = { {   1,       0, 0,       0    },
+						{0, cos(gamma5), -sin(gamma5), 0},
+						{0, sin(gamma5),  cos(gamma5), 0},
+						 {0,0,0,1}
+	};
+
+	float Rxy_6[4][4] = { {cos(gamma6), -sin(gamma6), 0, 0},
+						{sin(gamma6),  cos(gamma6), 0, 0},
+						{   0,       0, 1,       0    },
+						{	0,		 0, 0,		1	  }
+	};
+
 	float** res1 = multiplica_matrizes1(Rxy_1, Ryz_2);
 	float** res2 = multiplica_matrizes(res1, Rzw);
 	float** res3 = multiplica_matrizes(res2, Rxy_4);
@@ -111,10 +107,10 @@ float** rotaciona() {
 	return res5;
 }
 
-float* avalia(Quartenion q, float **m) {
+float* avalia(Quartenion q, float** m) {
 	float* v;
 	v = new float[4];
-	for (int i = 0 ; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 		v[i] = 0;
 	for (int i = 0; i < 2; i++)
 		v[i] = m[i][0] * q.x + m[i][1] * q.y + m[i][2] * q.z + m[i][3] * q.w;
@@ -126,7 +122,7 @@ void funcao::plota_funcao() {
 	float dx = (xmax - xmin) / points;
 	float dy = (ymax - ymin) / points;
 	float** rotation = rotaciona();
-	float *v;
+	float* v;
 	glColor3f(1.0f, 1.0f, 1.0f);
 	x = xmin;
 	for (int i = 0; i < points; i++) {
@@ -135,12 +131,12 @@ void funcao::plota_funcao() {
 			glBegin(GL_LINE_LOOP);
 			v = avalia(f(x, y), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x+dx, y), rotation);
+			v = avalia(f(x + dx, y), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x + dx, y+dy), rotation);
+			v = avalia(f(x + dx, y + dy), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x, y+dy), rotation);
-			glVertex2f(v[0], v[1]);		
+			v = avalia(f(x, y + dy), rotation);
+			glVertex2f(v[0], v[1]);
 			glEnd();
 			y += dy;
 		}
@@ -174,13 +170,13 @@ void funcao::draw_eixos_funcao()
 	v = avalia(e3, rotation);
 	glColor3f(0.0, 0.0, 1.0);
 	glBegin(GL_LINES);
-	
+
 	glVertex2f(v[0], v[1]);
 	glVertex2f(0.0, 0.0);
 	glEnd();
 	//eixo w
 	v = avalia(e3, rotation);
-	glColor3f(0.0,1.0, 1.0);
+	glColor3f(0.0, 1.0, 1.0);
 	glBegin(GL_LINES);
 	glVertex2f(v[0], v[1]);
 	glVertex2f(0.0, 0.0);
