@@ -11,7 +11,7 @@ class funcao {
 	int points;
 public:
 	funcao(float xm = -1, float xM = 1, float ym = -1, float yM =
-		1, int p = 100) {
+		1, int p = 50) {
 		xmin = xm;
 		ymin = ym;
 		xmax = xM;
@@ -23,7 +23,7 @@ public:
 		float r, theta;
 		theta = atan(y / x);
 		r = x * x + y * y;
-		return {x, y, r * r * (cos(theta) * cos(theta) - sin(theta) * sin(theta)),
+		return { x, y, r * r * (cos(theta) * cos(theta) - sin(theta) * sin(theta)),
 				2 * r * r * cos(theta) * sin(theta) };
 	}
 
