@@ -1,4 +1,4 @@
-﻿#include <gl\glut.h>
+#include <gl\glut.h>
 #include "funcao.h"
 #include <math.h>
 
@@ -13,6 +13,11 @@ float scale = 1.0;
 int xb, xm, yb, ym;
 funcao f;
 
+float Rxy[4][4] = { {cos(gamma), -sin(gamma), 0, 0},
+					{sin(gamma),  cos(gamma), 0, 0},
+					{   0,       0, 1,       0    },
+					{	0,		 0, 0,		1	  },
+					 };
 float Rxw[4][4] = { {cos(alpha), 0, 0, -sin(alpha)},
 					{   0,       1, 0,       0    },
 					{	0,		 0, 1,		 0	  },
@@ -30,20 +35,25 @@ float Rzw[4][4] = { {1,  0,	   0,		  0    },
 
 void plota_eixos()
 {
-	glColor3f(1.0, 0.0, 0.0);
-	glBegin(GL_LINES);
-	glVertex3f(10.0, 0.0, 0.0);
-	glVertex3f(0.0, 0.0, 0.0);
+	glColor4f(1.0, 0.0, 0.0, 0.0);
+	glBegin(GL_LINES); //eixo x
+	glVertex4f(10.0, 0.0, 0.0, 0.0);
+	glVertex4f(0.0, 0.0, 0.0, 0.0);
 	glEnd();
 	glColor3f(0.0, 1.0, 0.0);
-	glBegin(GL_LINES);
-	glVertex3f(0.0, 10.0, 0.0);
-	glVertex3f(0.0, 0.0, 0.0);
+	glBegin(GL_LINES); //eixo y
+	glVertex4f(0.0, 10.0, 0.0, 0.0);
+	glVertex4f(0.0, 0.0, 0.0, 0.0);
 	glEnd();
-	glColor3f(0.0, 0.0, 1.0);
-	glBegin(GL_LINES);
-	glVertex3f(0.0, 0.0, 10.0);
-	glVertex3f(0.0, 0.0, 0.0);
+	glColor4f(0.0, 0.0, 1.0, 0.0); 
+	glBegin(GL_LINES); //eixo z
+	glVertex4f(0.0, 0.0, 10.0, 0.0);
+	glVertex4f(0.0, 0.0, 0.0, 0.0);
+	glEnd();
+	glColor4f(0.0, 0.0, 0.0, 0.0);
+	glBegin(GL_LINES); //eixo w
+	glVertex4f(0.0, 0.0, 0.0, 10.0);
+	glVertex4f(0.0, 0.0, 0.0, 0.0);
 	glEnd();
 }
 void inicia_config()
@@ -53,10 +63,12 @@ void inicia_config()
 	glOrtho(-2.0, 2.0, -2.0, 2.0, -20.0, 20.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glRotatef(gamma, 0.0, 0.0, 1.0); // Rxy
+	//glRotatef(gamma, 0.0, 0.0, 1.0); // Rxy
+	glMultMatrixf(*Rxy); //psi
 	glRotatef(theta, 1.0, 0.0, 0.0); //Ryz
 	glMultMatrixf(*Rzw); //psi
-	glRotatef(alpha, 0.0, 0.0, 1.0); // Rxy
+	glMultMatrixf(*Rxy);
+	//glRotatef(alpha, 0.0, 0.0, 1.0); // Rxy
 	glRotatef(beta, 1.0, 0.0, 0.0); //Ryz
 	glRotatef(phi, 0.0, 0.0, 1.0); // Rxy
 	glScalef(scale, scale, scale);
@@ -121,7 +133,7 @@ void main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(400, 400);
 	glutInitWindowPosition(50, 50);
-	glutCreateWindow("3D");
+	glutCreateWindow("4D");
 	glutDisplayFunc(redesenha);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(botao_mouse);
