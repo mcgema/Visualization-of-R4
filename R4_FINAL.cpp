@@ -3,8 +3,12 @@
 #include <math.h>
 #include <iostream>
 
-
-extern float gamma1, gamma2, gamma3, gamma4, gamma5, gamma6;
+float gamma1 =0;
+float gamma2 = 0;
+float gamma3 = 0;
+float gamma4 = 0;
+float gamma5 = 0;
+float gamma6 = 0;
 float alpha = 40, beta = 60;
 float scale = 1.0;
 int xb, xm, yb, ym;
@@ -19,8 +23,8 @@ void inicia_config()
 	gluOrtho2D(0, 800, 800, 0);
 	//glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glPushMatrix();
-	glRotatef(alpha, 0.0, 0.0, 1.0);
+	//glPushMatrix();
+	//glRotatef(alpha, 0.0, 0.0, 1.0);
 
 	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -67,7 +71,7 @@ void keyboard(unsigned char key, int x, int y)
 		inicia_config();
 		redesenha();
 		break;
-	case '7':
+	case '3':
 		gamma3 -= 10;
 		inicia_config();
 		redesenha();
@@ -125,12 +129,12 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(400, 400);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("2D"); 
+	glutCreateWindow("2D");
 	inicia_config();
 	glutDisplayFunc(redesenha);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(botao_mouse);
 	glutMotionFunc(mov_mouse);
-	
+
 	glutMainLoop();
 }
