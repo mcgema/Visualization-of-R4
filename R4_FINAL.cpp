@@ -1,83 +1,42 @@
 #include <gl\glut.h>
 #include "funcao.h"
 #include <math.h>
+#include <iostream>
 
-float theta = 135;
-float phi = 45;
-float gamma = 90;
-float alpha = 30;
-float beta = 60;
-float psi = 120;
 
+extern float gamma1, gamma2, gamma3, gamma4, gamma5, gamma6;
+float alpha = 40, beta = 60;
 float scale = 1.0;
 int xb, xm, yb, ym;
 funcao f;
 
-float Rxy[4][4] = { {cos(gamma), -sin(gamma), 0, 0},
-					{sin(gamma),  cos(gamma), 0, 0},
-					{   0,       0, 1,       0    },
-					{	0,		 0, 0,		1	  },
-					 };
-float Rxw[4][4] = { {cos(alpha), 0, 0, -sin(alpha)},
-					{   0,       1, 0,       0    },
-					{	0,		 0, 1,		 0	  },
-					{sin(alpha), 0, 0,  cos(alpha)} };
 
-float Ryw[4][4] = { {1,   0,	   0,		0   },
-					{0, cos(beta), 0, -sin(beta)},
-					{0,	  0,	   1,		0   },
-					{0, sin(beta), 0,  cos(beta)} };
 
-float Rzw[4][4] = { {1,  0,	   0,		  0    },
-					{0,	 1,    0,         0    },
-					{0,	 0, cos(psi), -sin(psi)},
-					{0,  0, sin(psi),  cos(psi)} };
-
-void plota_eixos()
-{
-	glColor4f(1.0, 0.0, 0.0, 0.0);
-	glBegin(GL_LINES); //eixo x
-	glVertex4f(10.0, 0.0, 0.0, 0.0);
-	glVertex4f(0.0, 0.0, 0.0, 0.0);
-	glEnd();
-	glColor3f(0.0, 1.0, 0.0);
-	glBegin(GL_LINES); //eixo y
-	glVertex4f(0.0, 10.0, 0.0, 0.0);
-	glVertex4f(0.0, 0.0, 0.0, 0.0);
-	glEnd();
-	glColor4f(0.0, 0.0, 1.0, 0.0); 
-	glBegin(GL_LINES); //eixo z
-	glVertex4f(0.0, 0.0, 10.0, 0.0);
-	glVertex4f(0.0, 0.0, 0.0, 0.0);
-	glEnd();
-	glColor4f(0.0, 0.0, 0.0, 0.0);
-	glBegin(GL_LINES); //eixo w
-	glVertex4f(0.0, 0.0, 0.0, 10.0);
-	glVertex4f(0.0, 0.0, 0.0, 0.0);
-	glEnd();
-}
 void inicia_config()
 {
-	glMatrixMode(GL_PROJECTION);
+	glClearColor(1, 1, 1, 1);
+	/*glLoadIdentity();*/
+	gluOrtho2D(0, 800, 800, 0);
+	//glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glOrtho(-2.0, 2.0, -2.0, 2.0, -20.0, 20.0);
+	glPushMatrix();
+	glRotatef(alpha, 0.0, 0.0, 1.0);
+
+	/*glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(1, 1, 1, 1, 1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//glRotatef(gamma, 0.0, 0.0, 1.0); // Rxy
-	glMultMatrixf(*Rxy); //psi
-	glRotatef(theta, 1.0, 0.0, 0.0); //Ryz
-	glMultMatrixf(*Rzw); //psi
-	glMultMatrixf(*Rxy);
-	//glRotatef(alpha, 0.0, 0.0, 1.0); // Rxy
-	glRotatef(beta, 1.0, 0.0, 0.0); //Ryz
-	glRotatef(phi, 0.0, 0.0, 1.0); // Rxy
-	glScalef(scale, scale, scale);
+	glRotatef(alpha, 1, 0, 0);
+	glRotatef(beta, 0, 1, 0);
+	glScalef(scale, scale, scale);*/
 }
 void redesenha()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	plota_eixos();
+	//draw_eixos();
+	f.draw_eixos_funcao();
 	f.plota_funcao();
 	glutSwapBuffers();
 }
@@ -97,6 +56,37 @@ void keyboard(unsigned char key, int x, int y)
 		inicia_config();
 		redesenha();
 		break;
+	case '1':
+		extern float gamma1;
+		gamma1 -= 10;
+		inicia_config();
+		redesenha();
+		break;
+	case '2':
+		gamma2 -= 10;
+		inicia_config();
+		redesenha();
+		break;
+	case '7':
+		gamma3 -= 10;
+		inicia_config();
+		redesenha();
+		break;
+	case '4':
+		gamma4 -= 10;
+		inicia_config();
+		redesenha();
+		break;
+	case '5':
+		gamma5 -= 10;
+		inicia_config();
+		redesenha();
+		break;
+	case '6':
+		gamma6 -= 10;
+		inicia_config();
+		redesenha();
+		break;
 	}
 }
 void botao_mouse(int b, int state, int x, int y)
@@ -107,12 +97,12 @@ void botao_mouse(int b, int state, int x, int y)
 		case GLUT_DOWN:
 			xb = x;
 			yb = y;
-			break;
-		case GLUT_UP:
-			theta = theta + xm - xb;
-			phi = phi - ym + yb;
+
 			break;
 		}
+	case GLUT_UP:
+		alpha = alpha + xm - xb;
+		beta = beta - ym + yb;
 		break;
 	}
 }
@@ -120,24 +110,27 @@ void mov_mouse(int x, int y)
 {
 	xm = x;
 	ym = y;
-	theta = theta + xm - xb;
-	phi = phi - ym + yb;
+	alpha = alpha + xm - xb;
+	beta = beta - ym + yb;
 	inicia_config();
 	xb = xm;
 	yb = ym;
 	redesenha();
 }
-void main(int argc, char** argv)
+
+
+int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(400, 400);
-	glutInitWindowPosition(50, 50);
-	glutCreateWindow("4D");
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("2D"); 
+	inicia_config();
 	glutDisplayFunc(redesenha);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(botao_mouse);
-			glutMotionFunc(mov_mouse);
-	inicia_config();
+	glutMotionFunc(mov_mouse);
+	
 	glutMainLoop();
 }
