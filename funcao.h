@@ -1,7 +1,9 @@
 #include<cmath>
-struct Imaginary {
-	float i;
-	float j;
+struct Quartenion {
+	float x;
+	float y;
+	float z;
+	float w;
 };
 
 class funcao {
@@ -17,13 +19,14 @@ public:
 		points = p;
 	}
 
-	Imaginary f(float x, float y) {
+	Quartenion f(float x, float y) {
 		float r, theta;
 		theta = atan(y / x);
 		r = x * x + y * y;
-		return { r * r * (cos(theta) * cos(theta) - sin(theta) * sin(theta)), 
+		return {x, y, r * r * (cos(theta) * cos(theta) - sin(theta) * sin(theta)),
 				2 * r * r * cos(theta) * sin(theta) };
 	}
 
 	void plota_funcao();
+	void draw_eixos_funcao();
 };
