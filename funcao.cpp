@@ -65,7 +65,7 @@ float** rotaciona() {
 	float Rzw[4][4] = { {1,  0,	   0,		  0    },
 						{0,	 1,    0,         0    },
 						{0,	 0, cos(gamma[2]), -sin(gamma[2])},
-						{0,  0, sin(gamma[2]),  cos(gamma[2])}};
+						{0,  0, sin(gamma[2]),  cos(gamma[2])} };
 
 	float Rxy_4[4][4] = { {cos(gamma[3]), -sin(gamma[3]), 0, 0},
 						 {sin(gamma[3]),  cos(gamma[3]), 0, 0},
@@ -104,7 +104,7 @@ float** rotaciona() {
 	return res5;
 }
 
-float* avalia(Quartenion q, float** m) {
+float* produto_interno(Quartenion q, float** m) {
 	float* v;
 	v = new float[4];
 	for (int i = 0; i < 2; i++)
@@ -114,34 +114,34 @@ float* avalia(Quartenion q, float** m) {
 	return v;
 }
 
-void funcao::plota_funcao() {
-	float x, y;
-	float dx = (xmax - xmin) / points;
-	float dy = (ymax - ymin) / points;
+void funcao::plota_funcao(Quartenion f(float, float)) {
+	float r, theta;
+	float dr = (rmax - rmin) / points;
+	float dtheta = (thetamax - thetamin) / points;
 	float** rotation = rotaciona();
 	float* v;
 	glColor3f(1.0f, 1.0f, 1.0f);
-	x = xmin;
+	r = rmin;
 	for (int i = 0; i < points; i++) {
-		y = ymin;
+		theta = thetamin;
 		for (int j = 0; j < points; j++) {
 			glBegin(GL_LINE_LOOP);
-			v = avalia(f(x, y), rotation);
+			v = produto_interno(f(r, theta), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x + dx, y), rotation);
+			v = produto_interno(f(r + dr, theta), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x + dx, y + dy), rotation);
+			v = produto_interno(f(r + dr, theta + dtheta), rotation);
 			glVertex2f(v[0], v[1]);
-			v = avalia(f(x, y + dy), rotation);
+			v = produto_interno(f(r, theta + dtheta), rotation);
 			glVertex2f(v[0], v[1]);
 			glEnd();
-			y += dy;
+			theta += dtheta;
 		}
-		x += dx;
+		r += dr;
 	}
 }
 
-void funcao::draw_eixos_funcao()
+void funcao::draw_eixos_funcao(Quartenion f(float, float))
 {
 	float** rotation = rotaciona();
 	float* v;
@@ -150,21 +150,21 @@ void funcao::draw_eixos_funcao()
 	Quartenion e3 = { 0,0,1,0 };
 	Quartenion e4 = { 0,0,0,1 };
 	//eixo x
-	v = avalia(e1, rotation);
+	v = produto_interno(e1, rotation);
 	glColor3f(1.0, 0.0, 0.0);
 	glBegin(GL_LINES);
 	glVertex2f(v[0], v[1]);
 	glVertex2f(0.0, 0.0);
 	glEnd();
 	//eixo y
-	v = avalia(e2, rotation);
+	v = produto_interno(e2, rotation);
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_LINES);
 	glVertex2f(v[0], v[1]);
 	glVertex2f(0.0, 0.0);
 	glEnd();
 	//eixo z
-	v = avalia(e3, rotation);
+	v = produto_interno(e3, rotation);
 	glColor3f(0.0, 0.0, 1.0);
 	glBegin(GL_LINES);
 
@@ -172,8 +172,8 @@ void funcao::draw_eixos_funcao()
 	glVertex2f(0.0, 0.0);
 	glEnd();
 	//eixo w
-	v = avalia(e3, rotation);
-	glColor3f(0.0, 1.0, 1.0);
+	v = produto_interno(e4, rotation);
+	glColor3f(1.0, 0.0, 1.0);
 	glBegin(GL_LINES);
 	glVertex2f(v[0], v[1]);
 	glVertex2f(0.0, 0.0);
