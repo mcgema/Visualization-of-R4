@@ -3,15 +3,14 @@
 #include <math.h>
 #include <iostream>
 
-float gamma1 =0;
-float gamma2 = 0;
-float gamma3 = 0;
-float gamma4 = 0;
-float gamma5 = 0;
-float gamma6 = 0;
+
+float gamma[6] = { 0,0,0,0,0,0 };
+int flag = 0;
+
 float alpha = 40, beta = 60;
 float scale = 1.0;
 int xb, xm, yb, ym;
+
 funcao f;
 
 
@@ -49,7 +48,6 @@ void keyboard(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-
 	case 'S':
 		scale += 0.2;
 		inicia_config();
@@ -61,36 +59,42 @@ void keyboard(unsigned char key, int x, int y)
 		redesenha();
 		break;
 	case '1':
-		extern float gamma1;
-		gamma1 -= 10;
-		inicia_config();
-		redesenha();
+		flag = 0;
 		break;
 	case '2':
-		gamma2 -= 10;
-		inicia_config();
-		redesenha();
+		flag = 1;
 		break;
 	case '3':
-		gamma3 -= 10;
-		inicia_config();
-		redesenha();
+		flag = 2;
 		break;
 	case '4':
-		gamma4 -= 10;
-		inicia_config();
-		redesenha();
+		flag = 3;
 		break;
 	case '5':
-		gamma5 -= 10;
-		inicia_config();
-		redesenha();
+		flag = 4;
 		break;
 	case '6':
-		gamma6 -= 10;
+		flag = 5;
+		break;
+	case 'q':
+	case 'Q':
+		gamma[flag] -= 1;
 		inicia_config();
 		redesenha();
 		break;
+	case 'e':
+	case 'E':
+		gamma[flag] += 1;
+		inicia_config();
+		redesenha();
+		break;
+	case "r":
+	case 'R':
+		for (int i = 0; i < 6; i++) {
+			gamma[i] = 0;
+		}
+		inicia_config();
+		redesenha();
 	}
 }
 void botao_mouse(int b, int state, int x, int y)

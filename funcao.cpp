@@ -2,8 +2,7 @@
 #include "funcao.h"
 #include <iostream>
 
-extern float gamma1, gamma2, gamma3, gamma4, gamma5, gamma6;
-
+extern float gamma[6];
 
 
 float** multiplica_matrizes(float** m1, float(*m2)[4]) {
@@ -51,40 +50,38 @@ float** multiplica_matrizes1(float(*m1)[4], float(*m2)[4]) {
 }
 
 float** rotaciona() {
-	float Rxy_1[4][4] = { {cos(gamma1), -sin(gamma1), 0, 0},
-					{sin(gamma1),  cos(gamma1), 0, 0},
+	float Rxy_1[4][4] = { {cos(gamma[0]), -sin(gamma[0]), 0, 0},
+					{sin(gamma[0]),  cos(gamma[0]), 0, 0},
 					{   0,       0, 1,       0    },
 					{	0,		 0, 0,		1	  }
 	};
 
-
-
 	float Ryz_2[4][4] = { {   1,       0, 0,       0    },
-						{0, cos(gamma2), -sin(gamma2), 0},
-						{0, sin(gamma2),  cos(gamma2), 0},
+						{0, cos(gamma[1]), -sin(gamma[1]), 0},
+						{0, sin(gamma[1]),  cos(gamma[1]), 0},
 						 {0,0,0,1}
 	};
 
 	float Rzw[4][4] = { {1,  0,	   0,		  0    },
 						{0,	 1,    0,         0    },
-						{0,	 0, cos(gamma3), -sin(gamma3)},
-						{0,  0, sin(gamma3),  cos(gamma3)} };
+						{0,	 0, cos(gamma[2]), -sin(gamma[2])},
+						{0,  0, sin(gamma[2]),  cos(gamma[2])}};
 
-	float Rxy_4[4][4] = { {cos(gamma4), -sin(gamma4), 0, 0},
-						 {sin(gamma4),  cos(gamma4), 0, 0},
+	float Rxy_4[4][4] = { {cos(gamma[3]), -sin(gamma[3]), 0, 0},
+						 {sin(gamma[3]),  cos(gamma[3]), 0, 0},
 						 {   0,       0, 1,       0    },
 						 {	0,		 0, 0,		1	  }
 	};
 
 
 	float Ryz_5[4][4] = { {   1,       0, 0,       0    },
-						{0, cos(gamma5), -sin(gamma5), 0},
-						{0, sin(gamma5),  cos(gamma5), 0},
+						{0, cos(gamma[4]), -sin(gamma[4]), 0},
+						{0, sin(gamma[4]),  cos(gamma[4]), 0},
 						 {0,0,0,1}
 	};
 
-	float Rxy_6[4][4] = { {cos(gamma6), -sin(gamma6), 0, 0},
-						{sin(gamma6),  cos(gamma6), 0, 0},
+	float Rxy_6[4][4] = { {cos(gamma[5]), -sin(gamma[5]), 0, 0},
+						{sin(gamma[5]),  cos(gamma[5]), 0, 0},
 						{   0,       0, 1,       0    },
 						{	0,		 0, 0,		1	  }
 	};
