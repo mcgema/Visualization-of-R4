@@ -1,5 +1,6 @@
 #include <gl\glut.h>
 #include "funcao.h"
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <iostream>
 using namespace std;
@@ -36,7 +37,7 @@ void inicia_config()
 	glClearColor(1, 1, 1, 1);
 	glLoadIdentity();
 	gluOrtho2D(1, 1, 1, 1);
-	
+
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -91,13 +92,13 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case 'a':
 	case 'A':
-		gamma[flag] -= 1;
+		gamma[flag] -= 5* M_PI/(float)180;
 		inicia_config();
 		redesenha();
 		break;
 	case 's':
 	case 'S':
-		gamma[flag] += 1;
+		gamma[flag] += 5 * M_PI / (float)180;;
 		inicia_config();
 		redesenha();
 		break;
@@ -117,7 +118,7 @@ int main(int argc, char** argv)
 {
 	cout << "Guia para manusear o teclado:" << endl;
 	cout << "Os numeros 1, 2, 3, 4, 5, 6 em cojunto com a/A e s/S alteram o valor dos 6 angulos de euler" << endl;
-	cout << "a/A diminui o angulo em 1 grau e s/S aumenta o angulo em 1 grau " << endl;
+	cout << "a/A diminui o angulo em 5 graus e s/S aumenta o angulo em 5 graus" << endl;
 	cout << "d/D zera todos os angulos e devera ver o dominio da funcao" << endl;
 	cout << "q/Q aumenta o zoom no desenho e w/W diminui o zoom" << endl;
 	glutInit(&argc, argv);
